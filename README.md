@@ -210,8 +210,6 @@ It contains statements that map logical library names to their physical director
 
 ## Fig 9: Design Browser window for simulation
 
-![Uploading Screenshot 2024-11-18 181002.png…]()
-
 
 ## Fig 10: Simulation Waveform Window
 
