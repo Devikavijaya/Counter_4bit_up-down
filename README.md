@@ -1,4 +1,4 @@
-# Counter_4bit_up-down
+# EXP:02 Counter_4bit_up-down
 
 ## Aim:
 
@@ -28,8 +28,6 @@ The output is Counter which is 4 bit in size.
 
 ## Fig 1: 4 Bit Up/Down Counter
 
-![Screenshot 2024-11-16 151844](https://github.com/user-attachments/assets/5dc72a45-d03a-4b51-b62c-9c1f89a13e0c)
-
 ## Creating a Work space :
 
 	Create a folder in your name (Note: Give folder name without any space) and Create a new sub-Directory name it as Exp2 or counter_design for the Design and open a terminal from the Sub-Directory.
@@ -47,8 +45,6 @@ Functional Simulation:
 
 ## Fig 2: Invoke the Cadence Environment
 
-![Screenshot 2024-11-16 151932](https://github.com/user-attachments/assets/386173f4-a5c6-4c1d-91ba-43e56dc7992a)
-
 ## Creating Source Code:
 
 	In the Terminal, type gedit <filename>.v or <filename>.vhdl depending on the HDL Language you are to use (ex: 4b_up_downCount.v).
@@ -56,21 +52,52 @@ Functional Simulation:
 	A Blank Document opens up into which the following source code can be typed down.
 
 (Note : File name should be with HDL Extension)
-![Screenshot 2024-11-16 155812](https://github.com/user-attachments/assets/9a6a1cb6-43b3-4099-90f0-d87be2b5179a)
 
 ### Verilog code for 4-Bit Up-Down Counter:
+```
 
-*/Program  for  4-Bit Up-Down Counter
+`timescale 1ns / 1 ns
+module counter(clk,m,rst,count);
+input clk,m,rst;
+output reg [3:0] count;
+always@(posedge clk or negedge rst) begin
+if (!rst)
+count=0;
+else if(m)
+count=count+1;
+else
+count=count-1;
+end
+endmodule
 
-	Use Save option or Ctrl+S to save the code or click on the save option from the top most right corner and close the text file.
-
+```
+&emsp;&emsp;Use Save option or Ctrl+S to save the code or click on the save option from the top most right corner and close the text file.<br>
+<br>
 ## Creating Test bench:
 
 	Similarly, create your test bench using gedit <filename_tb>.v or <filename_tb>.vhdl to open a new blank document (4bitup_down_count_tb.v).
 
 ### Test-bench code for 4-Bit Up-Down Counter:
+```
 
-*/Test bench Program  for  4-Bit Up-Down Counter
+`timescale 1ns / 1ns
+module counter_test;
+reg clk,rst,m;
+wire [3:0] count;
+initial begin
+clk=0;
+rst=0;#5;
+rst=1; end
+initial begin
+m=1;
+#160 m=0; end
+counter counter1 (clk,m,rst, count);
+always #5 clk=~clk;
+initial begin $monitor("Time=%t rst=%b clk=%b count=%b" , $time,rst,clk,count);
+#320 $finish; end
+endmodule
+
+```
 
 ### To Launch Simulation tool
 	linux:/> nclaunch -new&            // “-new” option is used for invoking NCVERILOG for the first time for any design
@@ -78,6 +105,8 @@ Functional Simulation:
 	linux:/> nclaunch&                 // On subsequent calls to NCVERILOG
 
 It will invoke the nclaunch window for functional simulation we can compile,elaborate and simulate it using Multiple step
+
+![Screenshot (144)](https://github.com/user-attachments/assets/e8e08639-cc18-40ea-ac89-c7c62aaebc6c)
 
 ## Fig 3: Setting Multi-step simulation
 
@@ -95,7 +124,7 @@ Click the cds.lib file and save the file by clicking on Save option
 
 	We are simulating verilog design without using any libraries
 
-![image](https://github.com/user-attachments/assets/92af724f-9fb1-4b8c-ac19-674601800f07)
+
 
 ## Fig 5: Selection of Don’t include any libraries
 
@@ -106,11 +135,15 @@ Click the cds.lib file and save the file by clicking on Save option
 	Left side you can see the HDL files. Right side of the window has worklib and snapshots directories listed.
 
 	Worklib is the directory where all the compiled codes are stored while Snapshot will have output of elaboration which in turn goes for simulation 
-![Screenshot (240)](https://github.com/user-attachments/assets/b05572a5-af66-465a-beea-9fb788345092)
+
+![image](https://github.com/user-attachments/assets/ded55134-4ff5-4a24-a9cb-da1e193e777d)
 
 ## Fig 6: Nclaunch Window
 
 To perform the function simulation, the following three steps are involved Compilation, Elaboration and Simulation.
+
+![Screenshot 2024-11-18 175430](https://github.com/user-attachments/assets/e82655c4-7f8b-4620-9f18-199b081721ac)
+
 
 ## Step 1: Compilation:– Process to check the correct Verilog language syntax and usage 
 
@@ -131,7 +164,6 @@ i.e Cadence IES command for compile: ncverilog +access+rwc -compile fa.v
 Left side select the file and in Tools : launch verilog compiler with current selection will get enable. Click it to compile the code 
 
 Worklib is the directory where all the compiled codes are stored while Snapshot will have output of elaboration which in turn goes for simulation
-![Screenshot 2024-11-16 155920](https://github.com/user-attachments/assets/42c70590-9bdc-4025-b611-237655d4a732)
 
 ## Fig 7: Compiled database in worklib
 
@@ -141,8 +173,6 @@ i.e Cadence IES command for compile: ncverilog +access+rwc -compile fa.v
 
 	The cds.lib file is an ASCII text file. It defines which libraries are accessible and where they are located.
 It contains statements that map logical library names to their physical directory paths. For this Design, you will define a library called “worklib”
-
-![Screenshot (240)](https://github.com/user-attachments/assets/b05572a5-af66-465a-beea-9fb788345092)
 
 ## Step 2: Elaboration:– To check the port connections in hierarchical design 
 
@@ -164,8 +194,6 @@ It contains statements that map logical library names to their physical director
     
 	After elaboration the file will come under snapshot. Select the test bench and simulate it. 
 
-![Screenshot (241)](https://github.com/user-attachments/assets/77d31427-53ca-4275-bac9-03e8f888debb)
-
 ## Fig 8: Elaboration Launch Option
 
 ![Screenshot (242)](https://github.com/user-attachments/assets/2f6ee05c-354e-42d8-9d24-ec54b999308b)
@@ -182,13 +210,12 @@ It contains statements that map logical library names to their physical director
 
 ## Fig 9: Design Browser window for simulation
 
-![image](https://github.com/user-attachments/assets/1e31277a-4865-49f0-a901-779d0625a3b0)
+![Uploading Screenshot 2024-11-18 181002.png…]()
+
 
 ## Fig 10: Simulation Waveform Window
 
-## Fig 11: Simulation Waveform Window
-![Screenshot (244)](https://github.com/user-attachments/assets/9e13c5c2-639f-42e8-b808-ff9b493a9360)
-
+![Screenshot 2024-11-18 181033](https://github.com/user-attachments/assets/660ab639-5a70-48e4-a244-b86711d9b78e)
 
 ### Result
 
